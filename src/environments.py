@@ -1,5 +1,6 @@
 import random
 import pygame
+import time
 
 class State:
     '''
@@ -87,22 +88,22 @@ class Mars_Exploration_ENV(Environment):
         grid_w (int): Width of the grid. Defaults to 20
         num_hol (int): Number of holes to randomly place in the grid. Defaults to 10
         num_good (int): Number of good items to randomly place in the grid. Defaults to 10
+        init_random (bool): Weather to initialize the starting position of the player randomly
     """
 
-    def __init__(self, grid_h=20,  grid_w=20, num_hol=10, num_good=10):
+    def __init__(self, grid_h=20,  grid_w=20, num_hol=10, num_good=10, init_random=False):
         super().__init__()
         self.num_hol = num_hol
-        self.num_good = num_good
+        self.num_good = num_good 
+        self.init_random = init_random
 
         self.is_lost = False
         self.is_finished = False
-        self.clock = pygame.time.Clock()
 
         self.grid = [[State() for _ in range(grid_w)] for _ in range(grid_h)]
         self.player_pos = None
         self.init_grid()
         self.update_env()
-
     
     def init_grid(self):
         """
@@ -125,8 +126,10 @@ class Mars_Exploration_ENV(Environment):
             None
         """
         # initialize playyer position 
-        self.player_pos = (random.randint(0, len(self.grid) - 1), random.randint(0, len(self.grid[0]) - 1))
-        self.grid[self.player_pos[0]][self.player_pos[1]]
+        if not self.init_random : 
+            self.player_pos = (0, 0)
+        else :
+            self.player_pos = (random.randint(0, len(self.grid) - 1), random.randint(0, len(self.grid[0]) - 1))
         # initialize hols 
         holes_placed = 0
         while holes_placed < self.num_hol:
@@ -175,7 +178,6 @@ class Mars_Exploration_ENV(Environment):
 
 
 
-    # this function has to return new position for the new state of the player 
     def take_action(self, action : tuple): # action must be the selected direction along adjacent 
         """
         Updates the game state based on the player's action and current position.
@@ -196,23 +198,24 @@ class Mars_Exploration_ENV(Environment):
 
         # if the selected position has hole in it then move and decide player lost 
         if (self.grid[y_p][x_p].isHole()):
-            self.grid[y_p][x_p]
             self.is_lost = True
-            self.update_env(self)
+            self.is_finished = True
+            self.update_env() 
             return False
         # if the selected position is reachable (No hole in it) and goods in it then move to it 
         elif ((not self.grid[y_p][x_p].isHole()) and self.grid[y_p][x_p].isGood()): # Rewrote the first condition for better comprehension
             self.grid[y_p][x_p].set_empty()
             
             self.player_pos = (y_p, x_p)
-            self.update_env(self)
+            self.update_env()
             return True
         # if the selected position is reachable move to it 
         elif ((not self.grid[y_p][x_p].isHole()) and self.grid[y_p][x_p].isEmpty()): # Rewrote the first condition for better comprehension
             self.grid[y_p][x_p]
             self.player_pos = (y_p, x_p)
-            self.update_env(self)
+            self.update_env()
             return True
+        return False
         
 
     def update_env(self, screen_size=(800, 800)):
@@ -288,22 +291,21 @@ class Mars_Exploration_ENV(Environment):
                     pygame.draw.polygon(self.screen, (0, 0, 139), points, 2)   # Outline
 
         pygame.display.flip()
-        
-        self.clock.tick(60)
 
-    def run_game(self):
-        running = True
-        clock = pygame.time.Clock()
+
+    # def run_game(self):
+    #     running = True
+    #     clock = pygame.time.Clock()
                 
-        while running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                    pygame.quit()
-                    return
+    #     while running:
+    #         for event in pygame.event.get():
+    #             if event.type == pygame.QUIT:
+    #                 running = False
+    #                 pygame.quit()
+    #                 return
 
-            self.update_env()
-            clock.tick(60)  # 60 FPS
+    #         self.update_env()
+    #         clock.tick(60)  # 60 FPS
 
     def check_for_goods(self):
         """
@@ -319,7 +321,3 @@ class Mars_Exploration_ENV(Environment):
         self.is_finished = True
         return False
     
-# # Example usage
-# env = Mars_Exploration_ENV(20, 20, 5, 7)
-
-# env.run_game()
