@@ -200,22 +200,20 @@ class Mars_Exploration_ENV(Environment):
         if (self.grid[y_p][x_p].isHole()):
             self.is_lost = True
             self.is_finished = True
-            self.update_env() 
-            return False
+            return False, self.update_env()
         # if the selected position is reachable (No hole in it) and goods in it then move to it 
         elif ((not self.grid[y_p][x_p].isHole()) and self.grid[y_p][x_p].isGood()): # Rewrote the first condition for better comprehension
             self.grid[y_p][x_p].set_empty()
             
             self.player_pos = (y_p, x_p)
-            self.update_env()
-            return True
+            return True, self.update_env()
         # if the selected position is reachable move to it 
         elif ((not self.grid[y_p][x_p].isHole()) and self.grid[y_p][x_p].isEmpty()): # Rewrote the first condition for better comprehension
             self.grid[y_p][x_p]
             self.player_pos = (y_p, x_p)
-            self.update_env()
-            return True
-        return False
+            
+            return True, self.update_env()
+        return False, self.update_env()
         
 
     def update_env(self, screen_size=(800, 800)):
@@ -291,6 +289,12 @@ class Mars_Exploration_ENV(Environment):
                     pygame.draw.polygon(self.screen, (0, 0, 139), points, 2)   # Outline
 
         pygame.display.flip()
+        if self.is_finished:
+            time.sleep(1)  # Brief pause to show final state
+            pygame.quit()
+            return True
+        else :
+            return False
 
     def check_for_goods(self):
         """

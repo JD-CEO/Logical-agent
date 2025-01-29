@@ -77,6 +77,9 @@ if __name__ == "__main__":
         # Select action
         action = agent.action_selection(adj_blks)
         # take selected action
-        agent.env.take_action(action)
-        time.sleep(0.1) 
+        did_act, is_finished = agent.env.take_action(action)
+        if is_finished:
+            break
+        time.sleep(0.1)
+    print("The agent completly extracted all goods") 
 
