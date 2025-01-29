@@ -23,6 +23,7 @@ class State:
     '''
     def __init__(self):
         self.set_empty()
+        self.seen = False
     
     def set_hole(self):
         self._set_state(hole=True)
@@ -33,6 +34,8 @@ class State:
     def set_empty(self):
         self._set_state()
 
+    def set_seen(self):
+        self.seen = True
     def _set_state(self, hole=False, goods=False):
         self.hole = hole and not goods # H % ~ G
         self.goods = goods and not hole # ~H % G
@@ -45,14 +48,16 @@ class State:
         return (self.hole and not (self.empty or self.goods))
     def isGood(self):
         return (self.goods and not (self.empty or self.hole))
+    def isSeen(self):
+        return (self.seen)
 
     def __str__(self):
         if self.hole:
-            return "hole"
+            return "Hole"
         elif self.goods:
-            return "good"
+            return "Good"
         else :
-            return "empty"
+            return "Empty"
 
 class Environment():
     def __init__(self):
@@ -125,9 +130,10 @@ class Mars_Exploration_ENV(Environment):
         Returns:
             None
         """
-        # initialize playyer position 
+        # initialize player position 
         if not self.init_random : 
             self.player_pos = (0, 0)
+            self.grid[0][0].set_seen()
         else :
             self.player_pos = (random.randint(0, len(self.grid) - 1), random.randint(0, len(self.grid[0]) - 1))
         # initialize hols 
@@ -290,7 +296,7 @@ class Mars_Exploration_ENV(Environment):
 
         pygame.display.flip()
         if self.is_finished:
-            time.sleep(1)  # Brief pause to show final state
+            time.sleep(0.1)  # Brief pause to show final state
             pygame.quit()
             return True
         else :
@@ -310,3 +316,6 @@ class Mars_Exploration_ENV(Environment):
         self.is_finished = True
         return False
     
+    def get_current_position(self):
+        x, y = self.player_pos
+        return self.grid[x][y]

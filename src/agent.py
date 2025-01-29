@@ -1,6 +1,10 @@
 from environments import Mars_Exploration_ENV
 import time
 import random
+import sys
+
+
+
 
 def call_method_on_objects(obj_list, method_name):
     results = []
@@ -57,29 +61,68 @@ class FOL_Agent():
             if selected :
                 available_actions.append(direction)
 
-        if available_actions:
-            return random.choice(available_actions)
-        return None
+        # if available_actions:
+
+
+        #     # return random.choice(available_actions)
+        # return None
     
 
 
+    def dfs(self, cur, adj_blks):
+        cur.set_seen()
+        adj = agent.env.get_adjacent_blocks()
+        opt = []
+        for itm in adj_blks.items():
+                direction, block = itm
+                # if the block is 
+                r_neig = self.filter_adjacency(adj_blks, direction) # list of remaining neighbors
+                selected = (block.isGood()) or ((not block.isHole()) and ( not self._disjuntion(call_method_on_objects(r_neig, "isGood")))) # defined rule
+                
+                if selected and not block.isSeen():
+                    opt.append(itm)
 
+        for itm in opt:
+            direc, nxt = itm
+            print("dir: ",direc)
+            id_act, is_finished = agent.env.take_action(direc)
+            time.sleep(0.1)
+            if is_finished :
+                sys.exit()
+            self.dfs(nxt, agent.env.get_adjacent_blocks())
+            back_dir = (0, 0)
+            if direc == (1, 0):
+                back_dir = (-1, 0)
+            if direc == (0, 1):
+                back_dir = (0, -1)    
+            if direc == (-1, 0):
+                back_dir = (1, 0)
+            if direc == (0, -1):
+                back_dir = (0, 1)
+            print("back: ",back_dir)
+            id_act, is_finished = agent.env.take_action(back_dir) 
+            time.sleep(0.1)
+            if is_finished :
+                sys.exit()
 
-
+        return 
 
 
 if __name__ == "__main__":
     env = Mars_Exploration_ENV(grid_h=7,grid_w=7, num_hol=5, num_good=5)
     agent = FOL_Agent(env)
-    for i in range(1000): 
+    # print("!!!", agent.env.get_adjacent_blocks())
+    # print("!!!", agent.env.get_current_position())
+    agent.dfs(agent.env.get_current_position(), agent.env.get_adjacent_blocks())
+    # for i in range(1000): 
         # Observe environment
-        adj_blks = agent.env.get_adjacent_blocks()
+        # adj_blks = agent.env.get_adjacent_blocks()
         # Select action
-        action = agent.action_selection(adj_blks)
+        # action = agent.action_selection(adj_blks)
         # take selected action
-        did_act, is_finished = agent.env.take_action(action)
-        if is_finished:
-            break
-        time.sleep(0.1)
+        # did_act, is_finished = agent.env.take_action(action)
+        # if is_finished:
+        #     break
+        # time.sleep(0.1)
     print("The agent completly extracted all goods") 
 
