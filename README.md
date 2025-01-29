@@ -1,3 +1,4 @@
+
 # Mars Exploration Environment
 
 A grid-based environment for autonomous agent exploration with first-order logic constraints. Designed for developing and testing logical agents that navigate hazardous terrain while collecting resources.
@@ -26,18 +27,19 @@ A grid-based environment for autonomous agent exploration with first-order logic
 
 - State Exclusivity (∀ cells):
 
-    ```∀c ∈ Grid, (Hole(c) → ¬Good(c) ∧ ¬Empty(c)) ∧
+    ``` ∀c ∈ Grid, ((Hole(c) → ¬Good(c) ∧ ¬Empty(c)) ∧
             (Good(c) → ¬Hole(c) ∧ ¬Empty(c)) ∧
-            (Empty(c) → ¬Hole(c) ∧ ¬Good(c))
+            (Empty(c) → ¬Hole(c) ∧ ¬Good(c)))
     ```
 - Movement Constraints:
-
-    ```SafeMove(d) ≡ ∃c ∈ Adjacent(d), ¬Hole(c)
+    This means it is safe to move to an adjacent block known as **d**
+    
+    ``` SafeMove(d) ≡ ∃c ∈ Adjacent(d), ¬Hole(c)
     CollectGood(d) ≡ ∃c ∈ Adjacent(d), Good(c)
     ```
 
 - Termination Conditions:
-    ```GameOver ≡ ∃c ∈ Grid, (AtAgent(c) ∧ Hole(c)) ∨
+    ``` GameOver ≡ ∃c ∈ Grid, (AtAgent(c) ∧ Hole(c)) ∨
             (∀c ∈ Grid, ¬Good(c))
     ```
 
@@ -52,3 +54,11 @@ elif cell.isGood():
     # ∃g ∈ Goods, Collect(g) → UpdateState(g, Empty)
     cell.set_empty()
 ```
+
+# Agent Logical Model
+This agent is knowledge based thus to model agent via first-order logic (predicate logic) better to say it policy we need to define the language.
+A language is defined by :
+- Predicate variables 
+    - ``` V_ij for i in height and j in width ``` : for every element in the mars grid
+- Predicate symboles 
+    - ``` A_1 ```:
