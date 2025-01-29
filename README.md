@@ -20,14 +20,14 @@ A grid-based environment for autonomous agent exploration with first-order logic
 2. **Install Pygame**:
    ```bash
    pip install pygame
-
+   ```
 
 ## Usage
 
 from mars_exploration import Mars_Exploration_ENV
 
 #Initialize environment
-env = Mars_Exploration_ENV(grid_h=15, grid_w=15, num_hol=20, num_good=15)
+```env = Mars_Exploration_ENV(grid_h=15, grid_w=15, num_hol=20, num_good=15)
 
 #Example agent interaction loop
 while not env.is_finished:
@@ -39,30 +39,35 @@ while not env.is_finished:
         success, _ = env.take_action((0, 1))
     
     env.update_env()
-
+```
 # Environment Rules & Logic
 ## Core Axioms
 
 - State Exclusivity (∀ cells):
 
-    ∀c ∈ Grid, (Hole(c) → ¬Good(c) ∧ ¬Empty(c)) ∧
+    ```∀c ∈ Grid, (Hole(c) → ¬Good(c) ∧ ¬Empty(c)) ∧
             (Good(c) → ¬Hole(c) ∧ ¬Empty(c)) ∧
             (Empty(c) → ¬Hole(c) ∧ ¬Good(c))
+    ```
 - Movement Constraints:
 
-    SafeMove(d) ≡ ∃c ∈ Adjacent(d), ¬Hole(c)
+    ```SafeMove(d) ≡ ∃c ∈ Adjacent(d), ¬Hole(c)
     CollectGood(d) ≡ ∃c ∈ Adjacent(d), Good(c)
+    ```
 
 - Termination Conditions:
-    GameOver ≡ ∃c ∈ Grid, (AtAgent(c) ∧ Hole(c)) ∨
+    ```GameOver ≡ ∃c ∈ Grid, (AtAgent(c) ∧ Hole(c)) ∨
             (∀c ∈ Grid, ¬Good(c))
+    ```
 
 - First-Order Logic Implementation
+```
 #State validation in take_action()
-
 if cell.isHole():
     # ∀a ∈ Actions, EnterHole(a) → Terminate
     self.is_lost = True
+
 elif cell.isGood():
     # ∃g ∈ Goods, Collect(g) → UpdateState(g, Empty)
     cell.set_empty()
+```
