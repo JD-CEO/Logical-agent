@@ -5,10 +5,9 @@ import random
 def call_method_on_objects(obj_list, method_name):
     results = []
     for obj in obj_list:
-        # Use getattr to dynamically call the method by name
         method = getattr(obj, method_name)
-        result = method()  # Call the method
-        results.append(result)  # Store the result
+        result = method() 
+        results.append(result) 
     return results
 
 
