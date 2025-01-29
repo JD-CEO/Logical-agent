@@ -292,21 +292,6 @@ class Mars_Exploration_ENV(Environment):
 
         pygame.display.flip()
 
-
-    # def run_game(self):
-    #     running = True
-    #     clock = pygame.time.Clock()
-                
-    #     while running:
-    #         for event in pygame.event.get():
-    #             if event.type == pygame.QUIT:
-    #                 running = False
-    #                 pygame.quit()
-    #                 return
-
-    #         self.update_env()
-    #         clock.tick(60)  # 60 FPS
-
     def check_for_goods(self):
         """
         Checks if there are any goods remaining in the grid.
