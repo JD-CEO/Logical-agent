@@ -32,8 +32,8 @@ A grid-based environment for autonomous agent exploration with first-order logic
             (Empty(c) → ¬Hole(c) ∧ ¬Good(c)))
     ```
 - Movement Constraints:
-    This means it is safe to move to an adjacent block known as **d**
-    
+
+    This constraint says it is safe to move to an adjacent block known as **d**
     ``` SafeMove(d) ≡ ∃c ∈ Adjacent(d), ¬Hole(c)
     CollectGood(d) ≡ ∃c ∈ Adjacent(d), Good(c)
     ```
