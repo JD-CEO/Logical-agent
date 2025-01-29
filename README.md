@@ -21,25 +21,6 @@ A grid-based environment for autonomous agent exploration with first-order logic
    ```bash
    pip install pygame
    ```
-
-## Usage
-
-from mars_exploration import Mars_Exploration_ENV
-
-#Initialize environment
-```env = Mars_Exploration_ENV(grid_h=15, grid_w=15, num_hol=20, num_good=15)
-
-#Example agent interaction loop
-while not env.is_finished:
-    # Get adjacent blocks (agent's perception)
-    adjacent = env.get_adjacent_blocks()
-    
-    # Simple policy: Move right whenever possible
-    if (0, 1) in adjacent:
-        success, _ = env.take_action((0, 1))
-    
-    env.update_env()
-```
 # Environment Rules & Logic
 ## Core Axioms
 
