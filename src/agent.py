@@ -46,28 +46,20 @@ class FOL_Agent():
         filtered_dict = adj_dict.copy()
         filtered_dict.pop(direction, None)
         return list(filtered_dict.values())
-
-
-    def action_selection(self, adj_blks):
-        # define the gamma array in FOL => gamma : Is a list of well defined formulas 
-        
-        # define if each block is provable via the gamma 
-        available_actions = []
-        for direction, block in adj_blks.items():
-            # if the block is 
-            r_neig = self.filter_adjacency(adj_blks, direction) # list of remaining neighbors
-            selected = (block.isGood()) or ((not block.isHole()) and ( not self._disjuntion(call_method_on_objects(r_neig, "isGood")))) # defined rule
-            
-            if selected :
-                available_actions.append(direction)
-
-        # if available_actions:
-
-
-        #     # return random.choice(available_actions)
-        # return None
     
 
+    """
+    DFS for Agent Navigation:
+
+    This function enables an agent to explore a grid-based environment
+    using DFS while avoiding obstacles and adhering to movement rules.
+
+        Marks the current position as visited.
+        Retrieves adjacent blocks and determines valid movement directions.
+        Moves to each valid adjacent block and continues the DFS search.
+        Implements backtracking when no further movement is possible.
+        Terminates execution when the goal is reached.
+    """
 
     def dfs(self, cur, adj_blks):
         cur.set_seen()
