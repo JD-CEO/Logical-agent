@@ -45,20 +45,21 @@ while not env.is_finished:
 
 - State Exclusivity (∀ cells):
 
-∀c ∈ Grid, (Hole(c) → ¬Good(c) ∧ ¬Empty(c)) ∧
-           (Good(c) → ¬Hole(c) ∧ ¬Empty(c)) ∧
-           (Empty(c) → ¬Hole(c) ∧ ¬Good(c))
+    ∀c ∈ Grid, (Hole(c) → ¬Good(c) ∧ ¬Empty(c)) ∧
+            (Good(c) → ¬Hole(c) ∧ ¬Empty(c)) ∧
+            (Empty(c) → ¬Hole(c) ∧ ¬Good(c))
 - Movement Constraints:
 
-SafeMove(d) ≡ ∃c ∈ Adjacent(d), ¬Hole(c)
-CollectGood(d) ≡ ∃c ∈ Adjacent(d), Good(c)
+    SafeMove(d) ≡ ∃c ∈ Adjacent(d), ¬Hole(c)
+    CollectGood(d) ≡ ∃c ∈ Adjacent(d), Good(c)
 
 - Termination Conditions:
-GameOver ≡ ∃c ∈ Grid, (AtAgent(c) ∧ Hole(c)) ∨
-          (∀c ∈ Grid, ¬Good(c))
+    GameOver ≡ ∃c ∈ Grid, (AtAgent(c) ∧ Hole(c)) ∨
+            (∀c ∈ Grid, ¬Good(c))
 
-First-Order Logic Implementation
+- First-Order Logic Implementation
 #State validation in take_action()
+
 if cell.isHole():
     # ∀a ∈ Actions, EnterHole(a) → Terminate
     self.is_lost = True
