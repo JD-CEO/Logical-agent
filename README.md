@@ -57,8 +57,19 @@ elif cell.isGood():
 
 # Agent Logical Model
 This agent is knowledge based thus to model agent via first-order logic (predicate logic) better to say it policy we need to define the language.
+
 A language is defined by :
 - Predicate variables 
     - ``` V_ij for i in height and j in width ``` : for every element in the mars grid
 - Predicate symboles 
-    - ``` A_1 ```:
+    - ``` A_1 ```: Is there a hole in this block ?
+    - ``` A_2 ```: Is there goods in this block ?
+
+After having the language we must define the selection rules that states is the selected block suitable to move to ? in other words is this block satisfies the suitability constraint ?
+
+For all adjacent blocks this suitability formula is evaluated and amoung satisfied adjacent blocks , one is randomly selected as a final action which policy selected it . 
+
+### Suitability rule 
+``` 
+    A_2(b) ∨ (¬A_1(b) ∧ (∀r ∈ Neighbors(b), ¬A_2(r)))
+```
