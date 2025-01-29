@@ -222,7 +222,7 @@ class Mars_Exploration_ENV(Environment):
         return False, self.update_env()
         
 
-    def update_env(self, screen_size=(800, 800)):
+    def update_env(self, screen_size=(600, 600)):
         """
         Updates and renders the game environment using Pygame.
         This method handles the visual representation of the game state, including the grid,
