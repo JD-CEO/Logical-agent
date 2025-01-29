@@ -77,5 +77,3 @@ For all adjacent blocks this suitability formula is evaluated and amoung satisfi
 
 ## Performance visualization 
 ![video of it's interaction in a small grid](gif.gif)
-
-As it is observable this approach is not efficient but it was a fun project
