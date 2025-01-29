@@ -2,6 +2,24 @@ import random
 import pygame
 
 class State:
+    '''
+        A class representing the state of a cell in the Mars exploration grid.
+        Each cell can be in one of three states: empty, containing a hole, or containing goods.
+        States are mutually exclusive - a cell can only be in one state at a time.
+
+        Attributes:
+            hole (bool): True if cell contains a hole, False otherwise
+            goods (bool): True if cell contains goods, False otherwise
+            empty (bool): True if cell is empty, False otherwise
+
+        Methods:
+            set_hole(): Sets the cell state to contain a hole
+            set_good(): Sets the cell state to contain goods 
+            set_empty(): Sets the cell state to empty
+            isEmpty(): Checks if cell is empty
+            isHole(): Checks if cell contains a hole
+            isGood(): Checks if cell contains goods
+    '''
     def __init__(self):
         self.set_empty()
     
@@ -61,7 +79,7 @@ class Mars_Exploration_ENV(Environment):
         player_pos (tuple): Current position of the player as (y, x) coordinates
     Methods:
         init_grid(): Initializes the grid by randomly placing player, holes and good items
-        get_adjacent_blocks(current_position): Returns dictionary of adjacent blocks and their states
+        get_adjacent_blocks(): Returns dictionary of adjacent blocks and their states
         update_env(): Updates the environment state (placeholder)
         take_action(): Executes an action in the environment (placeholder)
     Parameters:
@@ -77,6 +95,8 @@ class Mars_Exploration_ENV(Environment):
         self.num_good = num_good
 
         self.is_lost = False
+        self.is_finished = False
+        self.clock = pygame.time.Clock()
 
         self.grid = [[State() for _ in range(grid_w)] for _ in range(grid_h)]
         self.player_pos = None
@@ -221,6 +241,7 @@ class Mars_Exploration_ENV(Environment):
             - self.grid: 2D list representing the game grid
             - self.player_pos: Tuple (y, x) representing player position
         """
+        self.check_for_goods()
         # Initialize Pygame if not already initialized
         if not pygame.get_init():
             pygame.init()
@@ -267,6 +288,8 @@ class Mars_Exploration_ENV(Environment):
                     pygame.draw.polygon(self.screen, (0, 0, 139), points, 2)   # Outline
 
         pygame.display.flip()
+        
+        self.clock.tick(60)
 
     def run_game(self):
         running = True
@@ -282,7 +305,21 @@ class Mars_Exploration_ENV(Environment):
             self.update_env()
             clock.tick(60)  # 60 FPS
 
-# Example usage
-env = Mars_Exploration_ENV(20, 20, 5, 7)
+    def check_for_goods(self):
+        """
+        Checks if there are any goods remaining in the grid.
+        Returns:
+            bool: True if at least one good exists, False otherwise
+        """
+        for row in self.grid:
+            for cell in row:
+                if cell.isGood():
+                    return True
+                
+        self.is_finished = True
+        return False
+    
+# # Example usage
+# env = Mars_Exploration_ENV(20, 20, 5, 7)
 
-env.run_game()
+# env.run_game()
