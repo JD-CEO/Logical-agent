@@ -69,7 +69,7 @@ class FOL_Agent():
 
 
 if __name__ == "__main__":
-    env = Mars_Exploration_ENV(grid_h=10,grid_w=10, num_hol=5, num_good=5)
+    env = Mars_Exploration_ENV(grid_h=7,grid_w=7, num_hol=5, num_good=5)
     agent = FOL_Agent(env)
     for i in range(1000): 
         # Observe environment

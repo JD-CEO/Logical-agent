@@ -73,3 +73,8 @@ For all adjacent blocks this suitability formula is evaluated and amoung satisfi
 ``` 
     A_2(b) ∨ (¬A_1(b) ∧ (∀r ∈ Neighbors(b), ¬A_2(r)))
 ```
+
+
+## Performance visualization 
+
+![video of it's interaction in a small grid](gif.gif)
