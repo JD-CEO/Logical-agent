@@ -67,7 +67,7 @@ A language is defined by :
 
 After having the language we must define the selection rules that states is the selected block suitable to move to ? in other words is this block satisfies the suitability constraint ?
 
-For all adjacent blocks this suitability formula is evaluated and amoung satisfied adjacent blocks , one is randomly selected as a final action which policy selected it . 
+For all adjacent blocks this suitability formula is evaluated and amoung satisfied adjacent blocks , select unseen one by DFS algorithm as a final action which policy selected it . 
 
 ### Suitability rule 
 ``` 
